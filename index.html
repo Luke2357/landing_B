@@ -17,6 +17,23 @@
 
   <title>With You · 온기 — 내 언어로 보는 노동권</title>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K7NXLBHPEV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K7NXLBHPEV');
+  </script>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "xbe04wsdku");
+    window.clarity && window.clarity('set', 'variant', 'B');
+  </script>
+
   <!-- Korean web font (system fallback keeps first paint instant) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -243,6 +260,7 @@
   .field input:focus, .field select:focus{ border-color:var(--navy); box-shadow:0 0 0 3px rgba(28,58,99,.1); }
   .field input::placeholder{ color:#B7BDC6; }
   .field.is-error input{ border-color:#D45B4B; box-shadow:0 0 0 3px rgba(212,91,75,.12); }
+  .field__hint{ margin-top:6px; font-size:11.5px; line-height:1.45; color:var(--faint); overflow-wrap:anywhere; }
   .field__err{ margin-top:5px; font-size:11.5px; color:#C8462F; font-weight:600; }
   .consent{ display:flex; align-items:flex-start; gap:9px; margin:4px 0 18px; }
   .consent input{ width:20px;height:20px; margin-top:1px; accent-color:var(--navy); flex-shrink:0; }
@@ -353,9 +371,11 @@
       botSubtitle: '곁에 있는 노동권 도우미',
       form: {
         name: '이름', namePh: '이름 또는 별칭',
-        contact: '연락처 / 메신저 아이디', contactPh: '전화번호 · Zalo · 카톡 ID 등',
+        contact: '연락처 / 메신저 아이디', contactPh: '연락 가능한 정보 입력',
+        contactHint: '전화번호 · WhatsApp · Facebook ID · 이메일 · Zalo · 카톡 ID 가능',
         nat: '국적 / 언어',
         natOptions: ['선택 안 함', '베트남어 (Tiếng Việt)', '캄보디아어 (ខ្មែរ)', '태국어 (ไทย)', '한국어', '기타'],
+        natOtherPh: '국적 또는 사용하는 언어를 입력해 주세요',
         consent: '개인정보 수집·이용에 동의합니다. 사전예약 안내 목적으로만 사용하며, 기록은 노동자 본인 소유입니다.',
         consentMore: '자세히',
         submit: '확인', submitting: '신청 중…',
@@ -375,9 +395,11 @@
       botSubtitle: 'Your labor-rights companion',
       form: {
         name: 'Name', namePh: 'Name or nickname',
-        contact: 'Phone / messenger ID', contactPh: 'Phone · Zalo · KakaoTalk ID, etc.',
+        contact: 'Phone / messenger ID', contactPh: 'Enter any contact info',
+        contactHint: 'Phone · WhatsApp · Facebook ID · email · Zalo · KakaoTalk ID accepted',
         nat: 'Nationality / Language',
         natOptions: ['Not selected', 'Vietnamese (Tiếng Việt)', 'Khmer (ខ្មែរ)', 'Thai (ไทย)', 'Korean', 'Other'],
+        natOtherPh: 'Enter your nationality or language',
         consent: 'I agree to the collection and use of my personal information, used only for pre-registration notices. Your records belong to you.',
         consentMore: 'Details',
         submit: 'Submit', submitting: 'Submitting…',
@@ -630,6 +652,7 @@
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');
     const [nat, setNat] = useState('');
+    const [natOther, setNatOther] = useState('');
     const [agree, setAgree] = useState(false);
     const [errors, setErrors] = useState({});
     const [state, setState] = useState('idle'); // idle | loading | success | error
@@ -655,7 +678,7 @@
           landingVariant: 'B',
           name: name.trim(),
           contact: contact.trim(),
-          nationalityLanguage: nat || '',
+          nationalityLanguage: nat === 'etc' ? natOther.trim() : nat || '',
           pageUrl: window.location.href,
           userAgent: navigator.userAgent,
           consent: agree
@@ -694,8 +717,9 @@
 
         <div className={`field ${errors.contact ? 'is-error' : ''}`}>
           <label>{f.contact}</label>
-          <input type="text" value={contact} placeholder={f.contactPh} inputMode="tel" autoComplete="off"
+          <input type="text" value={contact} placeholder={f.contactPh} inputMode="text" autoComplete="off" autoCapitalize="none"
             onChange={(e) => setContact(e.target.value)} />
+          <div className="field__hint">{f.contactHint}</div>
           {errors.contact && <div className="field__err">{errors.contact}</div>}
         </div>
 
@@ -704,6 +728,10 @@
           <select value={nat} onChange={(e) => setNat(e.target.value)}>
             {natVals.map((v, i) => <option key={v} value={v}>{f.natOptions[i]}</option>)}
           </select>
+          {nat === 'etc' && (
+            <input type="text" value={natOther} placeholder={f.natOtherPh} autoComplete="off"
+              onChange={(e) => setNatOther(e.target.value)} style={{ marginTop: 8 }} />
+          )}
         </div>
 
         <div className="consent">
@@ -726,7 +754,7 @@
   function Survey({ track, t }) {
     return (
       <div className="survey">
-        <a href="#" onClick={(e) => { e.preventDefault(); track('survey_link_click'); }}>
+        <a href="https://forms.gle/gXj9AkY8sLEvjQK4A" target="_blank" rel="noopener noreferrer" onClick={() => track('survey_link_click')}>
           <Icon name="survey" size={17} color="#1C3A63" /> {t.survey}
         </a>
       </div>
@@ -796,10 +824,17 @@
     const [lang, setLang] = useState('ko');
 
     const track = (name, params) => {
-      console.log('[event]', name, { variant: VERSION, lang, ...(params || {}) });
+      const payload = { variant: VERSION, lang, ...(params || {}) };
+      console.log('[event]', name, payload);
+      if (window.gtag) window.gtag('event', name, payload);
+      if (window.clarity) window.clarity('event', name);
     };
 
     useEffect(() => {
+      if (window.clarity) {
+        window.clarity('set', 'variant', VERSION);
+        window.clarity('set', 'lang', lang);
+      }
       track('page_view');
       document.documentElement.lang = lang;
     }, [lang]);
