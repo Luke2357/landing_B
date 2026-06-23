@@ -90,10 +90,15 @@
   .wy-logo__mark img{ height:26px; width:auto; display:block; }
   .wy-logo__sub{ font-size:11px; font-weight:500; color:var(--amber-700); margin-left:1px; }
   .wy-lang{
-    display:inline-flex; align-items:center; gap:5px; height:34px; padding:0 11px;
+    display:inline-flex; align-items:center; gap:2px; height:34px; padding:3px;
     border:1px solid var(--cream-line); border-radius:999px; background:#fff;
-    font-size:12px; font-weight:600; color:var(--navy); cursor:pointer;
   }
+  .wy-lang button{
+    appearance:none; border:0; cursor:pointer; font-family:var(--font);
+    height:100%; padding:0 11px; border-radius:999px; background:transparent;
+    font-size:12px; font-weight:700; color:var(--navy-300); transition:.14s; white-space:nowrap;
+  }
+  .wy-lang button.on{ background:var(--navy); color:#fff; }
 
   /* hero */
   .wy-hero{ padding:30px 22px 26px; }
@@ -287,29 +292,9 @@
   const { useState, useRef, useEffect } = React;
 
   /* ── version content (Korean reference copy) ───────────────────── */
+  /* ── version B content (ko / en) ───────────────────────────────── */
   const WY_CONTENT = {
-    A: {
-      tag: '버전 A',
-      label: '근태기록기',
-      value: '증거 확보 · 임금체불 대응',
-      eyebrow: '근무 기록 · 임금 증거',
-      h1: ['내 근태 기록, 이제 ', '증거', '로 남기세요.'],
-      sub: '출근만 하면 근무 시간이 자동으로 쌓여요. 이제 임금체불 시 당당하게 요구하세요.',
-      cta: '다운로드하러 가기',
-      featKicker: 'With You, 어떻게 쓰나요?',
-      featTitle: '‘출근 → 정리 → 증거’ 3단계',
-      features: [
-        { shot: '타이머 출퇴근 체크 화면', title: '출퇴근 기록', desc: '타이머로 손쉽게 매일의 출퇴근 시간을 기록해요.' },
-        { shot: '임금 기록부 화면', title: '임금기록부 / 월 급여 자동 정리', desc: '근무 시간이 쌓여 한 달 급여로 자동 계산돼요.' },
-        { shot: '근로내역서 내보내기 화면', title: '필요할 때 증거로 내보내기', desc: 'PDF, 이미지로 깔끔하게 내보내 어디에든 제출할 수 있어요.' },
-      ],
-      trust: { icon: 'shield', title: '노무사 자문을 거친 기록 방식', sub: '법률 사안은 전문가 확인 영역입니다', chip: '검증 중' },
-      bot: null,
-    },
-    B: {
-      tag: '버전 B',
-      label: '정보공유 + 챗봇',
-      value: '노동권 정보 · 무지 해소',
+    ko: {
       eyebrow: '내 언어로 보는 노동권',
       h1: ['', '내 상황에 맞는 노동 정보,', ' 쉽게 물어보세요.'],
       sub: '복잡한 노동법, 내 언어로, 내 상황에 맞추어 알려드려요. 모르면 손해 보는 권리, 미리 챙기세요.',
@@ -317,13 +302,12 @@
       featKicker: 'With You, 어떻게 쓰나요?',
       featTitle: '‘검색 → 맞춤 카드 → 내 언어로’',
       features: [
-        { shot: '내 상황 검색 채팅 화면', title: '내 상황 검색', desc: '내가 겪고 있는 상황을 채팅으로 치면, 챗봇이 맞춤 정보를 찾아 줘요.' },
-        { shot: '맞춤 노동권 정보 카드 화면', title: '맞춤 노동권 정보 카드', desc: '내 상황에 꼭 맞는 정보만 카드로 정리해 보여 줘요.' },
-        { shot: '언어 선택 화면', title: '내 언어로 쉽게 안내', desc: '어려운 법률 용어, 내 언어로 쉽게 풀어드려요.' },
+        { title: '내 상황 검색', desc: '내가 겪고 있는 상황을 채팅으로 치면, 챗봇이 맞춤 정보를 찾아 줘요.' },
+        { title: '맞춤 노동권 정보 카드', desc: '내 상황에 꼭 맞는 정보만 카드로 정리해 보여 줘요.' },
+        { title: '내 언어로 쉽게 안내', desc: '어려운 법률 용어, 내 언어로 쉽게 풀어드려요.' },
       ],
       trust: { icon: 'people', title: '센터·활동가가 함께 만드는 정보', sub: '현장의 목소리로 검토합니다', chip: '함께 제작' },
       bot: {
-        char: '위드유 캐릭터',
         name: '위드유',
         greeting: '오늘도 위드유가 곁에 있을게요.',
         chips: [
@@ -333,6 +317,78 @@
         ],
         note: '※ 데모 응답이에요. 정확한 상담은 전문가·센터와 함께합니다.',
       },
+    },
+    en: {
+      eyebrow: 'Labor rights in your language',
+      h1: ['', 'Labor info that fits your situation —', ' just ask.'],
+      sub: 'Complex labor law, explained in your language and tailored to your situation. Don’t lose rights you didn’t know you had.',
+      cta: 'Go to download',
+      featKicker: 'How does With You work?',
+      featTitle: '‘Search → Tailored cards → Your language’',
+      features: [
+        { title: 'Search your situation', desc: 'Type what you’re going through in chat, and the bot finds info tailored to you.' },
+        { title: 'Tailored labor-rights cards', desc: 'Only the info that fits your situation, organized into cards.' },
+        { title: 'Easy guidance in your language', desc: 'Hard legal terms, explained simply in your language.' },
+      ],
+      trust: { icon: 'people', title: 'Built with centers & advocates', sub: 'Reviewed by voices from the field', chip: 'Co-created' },
+      bot: {
+        name: 'With You',
+        greeting: 'With You is here for you today, too.',
+        chips: [
+          { q: 'I wasn’t paid my wages', a: 'For unpaid wages, you can file a complaint with the Ministry of Employment and Labor. Work records and pay statements help a lot — we can connect you to a nearby migrant worker support center.' },
+          { q: 'I don’t have a contract', a: 'Even without a written contract, you can assert your rights if the work you actually did is recognized. Keep your clock-in/out records, messages, and wage transfer history.' },
+          { q: 'My hours are too long', a: 'There are legal limits on working hours and overtime, and overtime earns extra pay. Recording your hours helps you verify this.' },
+        ],
+        note: '※ Demo responses. For accurate advice, consult an expert or support center.',
+      },
+    },
+  };
+
+  /* ── UI strings (ko / en) ──────────────────────────────────────── */
+  const T = {
+    ko: {
+      ghostNote: '오픈 알림만 보내드려요 · 스팸 없음',
+      preregTitle: ['사전예약하고,', 'With You를 먼저 만나보세요.'],
+      preregLead: ['오픈 소식과 베타 초대를 가장 먼저 보내드려요.', '최소한의 정보만 받아요.'],
+      botSubtitle: '곁에 있는 노동권 도우미',
+      form: {
+        name: '이름', namePh: '이름 또는 별칭',
+        contact: '연락처 / 메신저 아이디', contactPh: '전화번호 · Zalo · 카톡 ID 등',
+        nat: '국적 / 언어',
+        natOptions: ['선택 안 함', '베트남어 (Tiếng Việt)', '캄보디아어 (ខ្មែរ)', '태국어 (ไทย)', '한국어', '기타'],
+        consent: '개인정보 수집·이용에 동의합니다. 사전예약 안내 목적으로만 사용하며, 기록은 노동자 본인 소유입니다.',
+        consentMore: '자세히',
+        submit: '확인', submitting: '신청 중…',
+        errName: '이름을 입력해 주세요.',
+        errContact: '연락처 또는 메신저 ID를 입력해 주세요.',
+        errAgree: '개인정보 수집·이용에 동의해 주세요.',
+        okTitle: '사전예약 완료!',
+        okBody: ['오픈하면 가장 먼저 알려드릴게요.', '기다려 주셔서 고맙습니다 🙏'],
+      },
+      survey: '1분 설문에 참여하기 (구글폼)',
+      footer: { line1: '이주노동자와 함께 만드는 노동권 서비스 · 사전예약 베타', contact: '문의 creativeongi@gmail.com · 제작 ONGI' },
+    },
+    en: {
+      ghostNote: 'Launch alerts only · No spam',
+      preregTitle: ['Pre-register and', 'meet With You first.'],
+      preregLead: ['Be the first to get launch news and beta invites.', 'We only ask for the essentials.'],
+      botSubtitle: 'Your labor-rights companion',
+      form: {
+        name: 'Name', namePh: 'Name or nickname',
+        contact: 'Phone / messenger ID', contactPh: 'Phone · Zalo · KakaoTalk ID, etc.',
+        nat: 'Nationality / Language',
+        natOptions: ['Not selected', 'Vietnamese (Tiếng Việt)', 'Khmer (ខ្មែរ)', 'Thai (ไทย)', 'Korean', 'Other'],
+        consent: 'I agree to the collection and use of my personal information, used only for pre-registration notices. Your records belong to you.',
+        consentMore: 'Details',
+        submit: 'Submit', submitting: 'Submitting…',
+        errName: 'Please enter your name.',
+        errContact: 'Please enter a phone number or messenger ID.',
+        errAgree: 'Please agree to the personal information terms.',
+        okTitle: 'Pre-registration complete!',
+        okBody: ['We’ll let you know first when we launch.', 'Thank you for waiting 🙏'],
+      },
+      survey: 'Take a 1-min survey (Google Form)',
+      footer: { line1: 'A labor-rights service built with migrant workers · Pre-registration beta', contact: 'Contact creativeongi@gmail.com · Built by ONGI' },
     },
   };
 
@@ -429,10 +485,8 @@
     );
   }
 
-  function FeatureShot({ version, i, label }) {
-    const A = [AttendanceMock, LedgerMock, DocMock];
-    const B = [ChatSearchMock, ChatInfoMock, LangMock];
-    const Mock = (version === 'A' ? A : B)[i];
+  function FeatureShot({ i, label }) {
+    const Mock = [ChatSearchMock, ChatInfoMock, LangMock][i];
     return (
       <div className="feat-card__shot" role="img" aria-label={label}>
         <Mock />
@@ -441,7 +495,8 @@
   }
 
   /* ── header ────────────────────────────────────────────────────── */
-  function Header({ track }) {
+  function Header({ track, lang, setLang }) {
+    const pick = (l) => { if (l !== lang) { setLang(l); track('lang_change', { lang: l }); } };
     return (
       <header className="wy-head">
         <div className="wy-logo">
@@ -450,15 +505,16 @@
           </span>
           <span>With You</span>
         </div>
-        <button className="wy-lang" onClick={() => track('lang_tag_click')}>
-          <Icon name="globe" size={15} /> Tiếng Việt
-        </button>
+        <div className="wy-lang" role="group" aria-label="언어 선택 / Language">
+          <button className={lang === 'ko' ? 'on' : ''} aria-pressed={lang === 'ko'} onClick={() => pick('ko')}>한국어</button>
+          <button className={lang === 'en' ? 'on' : ''} aria-pressed={lang === 'en'} onClick={() => pick('en')}>EN</button>
+        </div>
       </header>
     );
   }
 
   /* ── hero ──────────────────────────────────────────────────────── */
-  function Hero({ data, onCta }) {
+  function Hero({ data, t, onCta }) {
     return (
       <section className="wy-hero">
         <span className="wy-eyebrow">● {data.eyebrow}</span>
@@ -466,14 +522,14 @@
         <p className="wy-sub">{data.sub}</p>
         <div style={{ marginTop: 22 }}>
           <button className="btn-primary" onClick={onCta}>{data.cta} <Icon name="arrow" size={18} color="#3A2A06" /></button>
-          <div className="btn-ghost-note">오픈 알림만 보내드려요 · 스팸 없음</div>
+          <div className="btn-ghost-note">{t.ghostNote}</div>
         </div>
       </section>
     );
   }
 
   /* ── features ──────────────────────────────────────────────────── */
-  function Features({ data, version }) {
+  function Features({ data }) {
     return (
       <section>
         <div className="wy-sec">
@@ -483,7 +539,7 @@
         <div className="feat">
           {data.features.map((f, i) => (
             <div className="feat-card" key={i}>
-              <FeatureShot version={version} i={i} label={f.shot} />
+              <FeatureShot i={i} label={f.title} />
               <div className="feat-card__row">
                 <div className="feat-card__no">{i + 1}</div>
                 <div className="feat-card__txt"><b>{f.title}</b><span>{f.desc}</span></div>
@@ -509,7 +565,7 @@
   }
 
   /* ── chatbot block (version B only) ────────────────────────────── */
-  function Chatbot({ bot, track }) {
+  function Chatbot({ bot, track, t }) {
     const [thread, setThread] = useState([{ from: 'bot', text: bot.greeting }]);
     const [asked, setAsked] = useState([]);
     const [typing, setTyping] = useState(false);
@@ -536,10 +592,10 @@
     return (
       <div className="bot">
         <div className="bot__top">
-          <div className="bot__char ph" role="img" aria-label={bot.char}>
+          <div className="bot__char ph" role="img" aria-label={bot.name}>
             <span style={{ fontFamily: 'var(--mono)', fontSize: 9, color: '#5B7299' }}>위드유</span>
           </div>
-          <div className="bot__name">{bot.name}<span>곁에 있는 노동권 도우미</span></div>
+          <div className="bot__name">{bot.name}<span>{t.botSubtitle}</span></div>
         </div>
 
         <div className="bot__thread" ref={threadRef}>
@@ -567,7 +623,10 @@
   }
 
   /* ── preregistration form ──────────────────────────────────────── */
-  function PreregForm({ formRef, track }) {
+  const PREREG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx-ESX75JRA97Vzeg89d_zaQZ7ia6OlEJtwliVWKTb4vTootpQFLs6qOfcKoactESA/exec';
+
+  function PreregForm({ formRef, track, t }) {
+    const f = t.form;
     const [name, setName] = useState('');
     const [contact, setContact] = useState('');
     const [nat, setNat] = useState('');
@@ -579,18 +638,36 @@
       e.preventDefault();
       track('preregister_submit');
       const err = {};
-      if (!name.trim()) err.name = '이름을 입력해 주세요.';
-      if (!contact.trim()) err.contact = '연락처 또는 메신저 ID를 입력해 주세요.';
-      if (!agree) err.agree = '개인정보 수집·이용에 동의해 주세요.';
+      if (!name.trim()) err.name = f.errName;
+      if (!contact.trim()) err.contact = f.errContact;
+      if (!agree) err.agree = f.errAgree;
       setErrors(err);
       if (Object.keys(err).length) return;
 
       setState('loading');
-      // mock async submit — real build syncs to a no-code form / sheet
-      setTimeout(() => {
+      fetch(PREREG_ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify({
+          landingVariant: 'B',
+          name: name.trim(),
+          contact: contact.trim(),
+          nationalityLanguage: nat || '',
+          pageUrl: window.location.href,
+          userAgent: navigator.userAgent,
+          consent: agree
+        })
+      }).then(() => {
         setState('success');
         track('preregister_success', { nat: nat || 'n/a' });
-      }, 1100);
+      }).catch(() => {
+        setState('idle');
+        track('preregister_error');
+        alert('신청 저장 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      });
     };
 
     if (state === 'success') {
@@ -598,82 +675,78 @@
         <div className="form" ref={formRef}>
           <div className="form__ok">
             <div className="ok-ic"><Icon name="check" size={26} color="#2E8B57" /></div>
-            <b>사전예약 완료!</b>
-            <p>오픈하면 가장 먼저 알려드릴게요.<br/>기다려 주셔서 고맙습니다 🙏</p>
+            <b>{f.okTitle}</b>
+            <p>{f.okBody[0]}<br/>{f.okBody[1]}</p>
           </div>
         </div>
       );
     }
 
+    const natVals = ['', 'vi', 'km', 'th', 'ko', 'etc'];
     return (
       <form className="form" ref={formRef} onSubmit={submit} noValidate>
         <div className={`field ${errors.name ? 'is-error' : ''}`}>
-          <label>이름</label>
-          <input type="text" value={name} placeholder="이름 또는 별칭" autoComplete="off"
+          <label>{f.name}</label>
+          <input type="text" value={name} placeholder={f.namePh} autoComplete="off"
             onChange={(e) => setName(e.target.value)} />
           {errors.name && <div className="field__err">{errors.name}</div>}
         </div>
 
         <div className={`field ${errors.contact ? 'is-error' : ''}`}>
-          <label>연락처 / 메신저 아이디</label>
-          <input type="text" value={contact} placeholder="전화번호 · Zalo · 카톡 ID 등" inputMode="tel" autoComplete="off"
+          <label>{f.contact}</label>
+          <input type="text" value={contact} placeholder={f.contactPh} inputMode="tel" autoComplete="off"
             onChange={(e) => setContact(e.target.value)} />
           {errors.contact && <div className="field__err">{errors.contact}</div>}
         </div>
 
         <div className="field">
-          <label>국적 / 언어</label>
+          <label>{f.nat}</label>
           <select value={nat} onChange={(e) => setNat(e.target.value)}>
-            <option value="">선택 안 함</option>
-            <option value="vi">베트남어 (Tiếng Việt)</option>
-            <option value="km">캄보디아어 (ខ្មែរ)</option>
-            <option value="th">태국어 (ไทย)</option>
-            <option value="ko">한국어</option>
-            <option value="etc">기타</option>
+            {natVals.map((v, i) => <option key={v} value={v}>{f.natOptions[i]}</option>)}
           </select>
         </div>
 
         <div className="consent">
           <input id="agree" type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
           <label htmlFor="agree">
-            개인정보 수집·이용에 동의합니다. 사전예약 안내 목적으로만 사용하며, 기록은 노동자 본인 소유입니다.
-            {' '}<a href="#" onClick={(e) => e.preventDefault()}>자세히</a>
+            {f.consent}
+            {' '}<a href="#" onClick={(e) => e.preventDefault()}>{f.consentMore}</a>
           </label>
         </div>
         {errors.agree && <div className="field__err" style={{ marginTop: -12, marginBottom: 12 }}>{errors.agree}</div>}
 
         <button className="btn-primary" type="submit" disabled={state === 'loading'}>
-          {state === 'loading' ? '신청 중…' : '확인'}
+          {state === 'loading' ? f.submitting : f.submit}
         </button>
       </form>
     );
   }
 
   /* ── survey + footer ───────────────────────────────────────────── */
-  function Survey({ track }) {
+  function Survey({ track, t }) {
     return (
       <div className="survey">
         <a href="#" onClick={(e) => { e.preventDefault(); track('survey_link_click'); }}>
-          <Icon name="survey" size={17} color="#1C3A63" /> 1분 설문에 참여하기 (구글폼)
+          <Icon name="survey" size={17} color="#1C3A63" /> {t.survey}
         </a>
       </div>
     );
   }
 
-  function Footer() {
+  function Footer({ t }) {
     return (
       <footer className="wy-foot">
         <b>With You · 온기(ONGI)</b>
-        <p>이주노동자와 함께 만드는 노동권 서비스 · 사전예약 베타<br/>
-           문의 hello@withyou.example · 제작 With You 팀<br/>
-           <span style={{ color: '#B7AE9C' }}>※ 한국어 시안 — 출시 빌드는 베트남어, 키맨·자문단 감수 예정</span></p>
+        <p>{t.footer.line1}<br/>
+           {t.footer.contact}</p>
       </footer>
     );
   }
 
   /* ── landing (full-bleed, page-scrolled) ───────────────────────── */
-  function Landing({ version, track }) {
-    const data = WY_CONTENT[version];
+  function Landing({ lang, setLang, track }) {
+    const data = WY_CONTENT[lang];
+    const t = T[lang];
     const formRef = useRef(null);
     const depth = useRef({ 50: false, 80: false });
 
@@ -701,20 +774,18 @@
 
     return (
       <div className="wy">
-        <Header track={track} />
-        <Hero data={data} onCta={scrollToForm} />
-        <Features data={data} version={version} />
-        {version === 'B' && data.bot && <Chatbot bot={data.bot} track={track} />}
+        <Header track={track} lang={lang} setLang={setLang} />
+        <Hero data={data} t={t} onCta={scrollToForm} />
+        <Features data={data} />
+        <Chatbot key={lang} bot={data.bot} track={track} t={t} />
         <Trust trust={data.trust} />
         <section className="prereg-head">
-          {version === 'B' && (
-            <h2 className="prereg-head__title">사전예약하고,<br/>With You를 먼저 만나보세요.</h2>
-          )}
-          <p className="prereg-head__lead">오픈 소식과 베타 초대를 가장 먼저 보내드려요.<br/>최소한의 정보만 받아요.</p>
+          <h2 className="prereg-head__title">{t.preregTitle[0]}<br/>{t.preregTitle[1]}</h2>
+          <p className="prereg-head__lead">{t.preregLead[0]}<br/>{t.preregLead[1]}</p>
         </section>
-        <PreregForm formRef={formRef} track={track} />
-        <Survey track={track} />
-        <Footer />
+        <PreregForm formRef={formRef} track={track} t={t} />
+        <Survey track={track} t={t} />
+        <Footer t={t} />
       </div>
     );
   }
@@ -722,15 +793,20 @@
   /* ── app (single-version landing) ─────────────────────────────── */
   const VERSION = 'B';
   function App() {
+    const [lang, setLang] = useState('ko');
+
     const track = (name, params) => {
-      console.log('[event]', name, { variant: VERSION, ...(params || {}) });
+      console.log('[event]', name, { variant: VERSION, lang, ...(params || {}) });
     };
 
-    useEffect(() => { track('page_view'); }, []);
+    useEffect(() => {
+      track('page_view');
+      document.documentElement.lang = lang;
+    }, [lang]);
 
     return (
       <div className="m-shell">
-        <Landing version={VERSION} track={track} />
+        <Landing lang={lang} setLang={setLang} track={track} />
       </div>
     );
   }
