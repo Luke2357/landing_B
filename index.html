@@ -33,6 +33,23 @@
     })(window, document, "clarity", "script", "xbe04wsdku");
     window.clarity && window.clarity('set', 'variant', 'B');
   </script>
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2022642181664534');
+    fbq('track', 'PageView', { variant: 'B' });
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2022642181664534&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 
   <!-- Korean web font (system fallback keeps first paint instant) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -828,6 +845,13 @@
       console.log('[event]', name, payload);
       if (window.gtag) window.gtag('event', name, payload);
       if (window.clarity) window.clarity('event', name);
+      if (window.fbq && name !== 'page_view') {
+        if (name === 'preregister_success') {
+          window.fbq('track', 'Lead', payload);
+        } else {
+          window.fbq('trackCustom', name, payload);
+        }
+      }
     };
 
     useEffect(() => {
